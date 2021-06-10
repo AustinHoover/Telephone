@@ -1,0 +1,78 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.LinkedList;
+
+public class NetworkParser {
+    
+    InputStream incomingStream;
+    OutputStream outgoingStream;
+    
+    LinkedList<NetworkMessage> incomingMessageQueue = new LinkedList();
+    LinkedList<NetworkMessage> outgoingMessageQueue = new LinkedList();
+    
+    LinkedList<Byte> incomingByteQueue = new LinkedList();
+    LinkedList<Byte> outgoingByteQueue = new LinkedList();
+    
+    
+    
+    public NetworkParser(InputStream incomingStream, OutputStream outgoingStream){
+        this.incomingStream = incomingStream;
+        this.outgoingStream = outgoingStream;
+    }
+    
+    public void start(){
+        
+    }
+    
+    public void readMessagesIn(){
+        try {
+            //read in bytes
+            int nextValue = 0;
+            byte currentByte = -1;
+            while(incomingStream.available() > 0){
+                nextValue = incomingStream.read();
+                if(nextValue != -1){
+                    currentByte = (byte)nextValue;
+                    incomingByteQueue.add(currentByte);
+//                    System.out.println(currentByte);
+                }
+                //add bytes to some kind of queue
+            }
+            //parse byte queue for messages
+            //for each message, append to clientIncomingMessageQueue
+            NetworkMessage newMessage;
+            while((newMessage = NetworkMessage.parseBytestreamForMessage(incomingByteQueue))!=null){
+                incomingMessageQueue.add(newMessage);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.exit(0);
+        }
+    }
+    
+    public void pushMessagesOut(){
+        for(NetworkMessage message : outgoingMessageQueue){
+            outgoingMessageQueue.remove(message);
+            try {
+//                System.out.println("Write message of type " + message.getType());
+                outgoingStream.write(message.getRawBytes());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean hasIncomingMessaage(){
+        return incomingMessageQueue.size() > 0;
+    }
+    
+    public NetworkMessage popIncomingMessage(){
+        return incomingMessageQueue.remove(0);
+    }
+    
+    public void addOutgoingMessage(NetworkMessage message){
+        outgoingMessageQueue.add(message);
+    }
+    
+}

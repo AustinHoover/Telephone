@@ -1,0 +1,147 @@
+{
+    "outputPath" : "./test",
+    "packageName" : "electrosphere.mypackage.net.parser",
+    "categories":[
+
+
+        {
+            "categoryName" : "World",
+            "data" : [
+                {
+                    "name" : "worldName",
+                    "type" : "VAR_STRING"
+                },
+                {
+                    "name" : "worldSize",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "locationX",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "locationY",
+                    "type" : "FIXED_INT"
+                }
+            ],
+            "messageTypes" : [
+                {
+                    "messageName" : "Info",
+                    "data" : [
+                        "worldName",
+                        "worldSize"
+                    ]
+                },
+                {
+                    "messageName" : "Update",
+                    "data" : [
+                        "locationX",
+                        "locationY"
+                    ]
+                }
+            ]
+        },
+
+
+
+
+
+
+
+
+
+
+        {
+            "categoryName" : "Player",
+            "data" : [
+                {
+                    "name" : "playerID",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "worldSize",
+                    "type" : "FIXED_INT"
+                }
+            ],
+            "messageTypes" : [
+                {
+                    "messageName" : "Set_ID",
+                    "data" : [
+                        "playerID",
+                        "worldSize"
+                    ]
+                }
+
+            ]
+        },
+
+
+
+
+
+
+
+
+
+        {
+            "categoryName" : "Entity",
+            "data" : [
+                {
+                    "name" : "creatureType",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "entityID",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "positionX",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "positionY",
+                    "type" : "FIXED_INT"
+                },
+                {
+                    "name" : "positionZ",
+                    "type" : "FIXED_INT"
+                }
+            ],
+            "messageTypes" : [
+                {
+                    "messageName" : "Create",
+                    "data" : [
+                        "creatureType",
+                        "entityID",
+                        "positionX",
+                        "positionY",
+                        "positionZ"
+                    ]
+                },
+                {
+                    "messageName" : "Move",
+                    "data" : [
+                        "entityID",
+                        "positionX",
+                        "positionY",
+                        "positionZ"
+                    ]
+                },
+                {
+                    "messageName" : "Destroy",
+                    "data" : [
+                        "entityID"
+                    ]
+                }
+
+
+
+            ]
+        }
+
+
+
+
+
+    ]
+}

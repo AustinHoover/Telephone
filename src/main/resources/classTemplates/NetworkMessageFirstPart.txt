@@ -1,0 +1,5 @@
+import java.util.LinkedList;
+
+public abstract class NetworkMessage {
+    
+    public enum MessageType {

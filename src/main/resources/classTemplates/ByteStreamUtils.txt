@@ -1,0 +1,59 @@
+import java.nio.ByteBuffer;
+import java.util.LinkedList;
+
+public class ByteStreamUtils {
+    
+    static ByteBuffer integerCompactor;
+    
+    static {
+        integerCompactor = ByteBuffer.allocate(4);
+    }
+    
+    public static int popIntFromByteQueue(LinkedList<Byte> queue){
+        int rVal = -1;
+        integerCompactor.clear();
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.flip();
+        rVal = integerCompactor.getInt();
+        return rVal;
+    }
+    
+    public static float popFloatFromByteQueue(LinkedList<Byte> queue){
+        float rVal = -1;
+        integerCompactor.clear();
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.flip();
+        rVal = integerCompactor.getFloat();
+        return rVal;
+    }
+    
+    public static byte[] serializeIntToBytes(int i){
+        byte[] rVal = new byte[4];
+        integerCompactor.clear();
+        integerCompactor.putInt(i);
+        integerCompactor.flip();
+        rVal[0] = integerCompactor.get();
+        rVal[1] = integerCompactor.get();
+        rVal[2] = integerCompactor.get();
+        rVal[3] = integerCompactor.get();
+        return rVal;
+    }
+    
+    public static byte[] serializeFloatToBytes(float i){
+        byte[] rVal = new byte[4];
+        integerCompactor.clear();
+        integerCompactor.putFloat(i);
+        integerCompactor.flip();
+        rVal[0] = integerCompactor.get();
+        rVal[1] = integerCompactor.get();
+        rVal[2] = integerCompactor.get();
+        rVal[3] = integerCompactor.get();
+        return rVal;
+    }
+}

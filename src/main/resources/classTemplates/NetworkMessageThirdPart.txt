@@ -1,0 +1,13 @@
+            }
+        }
+        return rVal;
+    }
+    
+    public boolean isSerialized(){
+        return serialized;
+    }
+    
+    abstract void serialize();
+    
+}
+

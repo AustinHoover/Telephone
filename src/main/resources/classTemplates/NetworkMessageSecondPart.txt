@@ -1,0 +1,21 @@
+    }
+    
+    MessageType type;
+    boolean serialized; // has this message been converted to bytes?
+    byte[] rawBytes;
+
+    public MessageType getType() {
+        return type;
+    }
+
+    public byte[] getRawBytes() {
+        return rawBytes;
+    }
+    
+    public static NetworkMessage parseBytestreamForMessage(CopyOnWriteArrayList<Byte> byteStream){
+        NetworkMessage rVal = null;
+        byte firstByte;
+        byte secondByte;
+        if(byteStream.size() > 1){
+            firstByte = byteStream.get(0);
+            switch(firstByte){
