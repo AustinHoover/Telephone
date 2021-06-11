@@ -6,7 +6,7 @@ public class ByteStreamUtils {
     static ByteBuffer integerCompactor;
     
     static {
-        integerCompactor = ByteBuffer.allocate(4);
+        integerCompactor = ByteBuffer.allocate(8);
     }
     
     public static int popIntFromByteQueue(LinkedList<Byte> queue){
@@ -33,6 +33,22 @@ public class ByteStreamUtils {
         return rVal;
     }
     
+    public static long popLongFromByteQueue(LinkedList<Byte> queue){
+        long rVal = -1;
+        integerCompactor.clear();
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.put(queue.remove(0));
+        integerCompactor.flip();
+        rVal = integerCompactor.getLong();
+        return rVal;
+    }
+    
     public static byte[] serializeIntToBytes(int i){
         byte[] rVal = new byte[4];
         integerCompactor.clear();
@@ -54,6 +70,22 @@ public class ByteStreamUtils {
         rVal[1] = integerCompactor.get();
         rVal[2] = integerCompactor.get();
         rVal[3] = integerCompactor.get();
+        return rVal;
+    }
+    
+    public static byte[] serializeLongToBytes(long i){
+        byte[] rVal = new byte[8];
+        integerCompactor.clear();
+        integerCompactor.putLong(i);
+        integerCompactor.flip();
+        rVal[0] = integerCompactor.get();
+        rVal[1] = integerCompactor.get();
+        rVal[2] = integerCompactor.get();
+        rVal[3] = integerCompactor.get();
+        rVal[4] = integerCompactor.get();
+        rVal[5] = integerCompactor.get();
+        rVal[6] = integerCompactor.get();
+        rVal[7] = integerCompactor.get();
         return rVal;
     }
 }
