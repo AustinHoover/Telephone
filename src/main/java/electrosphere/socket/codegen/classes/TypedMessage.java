@@ -78,6 +78,11 @@ public class TypedMessage extends SourceGenerator {
         fullFile = fullFile + "        this.messageType = messageType;\n";
         fullFile = fullFile + "    }\n\n";
         
+        //getter and setter for message subtype
+        fullFile = fullFile + "    public " + cat.getCategoryName() + "MessageType getMessageSubtype(){\n";
+        fullFile = fullFile + "        return this.messageType;\n";
+        fullFile = fullFile + "    }\n\n";
+        
         //getters and setters for each data
         for(Data variable : cat.getData()){
             switch(variable.getType()){
