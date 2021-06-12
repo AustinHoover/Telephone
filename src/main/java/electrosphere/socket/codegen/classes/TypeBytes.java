@@ -3,8 +3,10 @@ package electrosphere.socket.codegen.classes;
 import electrosphere.socket.codegen.Main;
 import electrosphere.socket.codegen.model.Category;
 import electrosphere.socket.codegen.model.ConfigFile;
+import electrosphere.socket.codegen.model.Data;
 import electrosphere.socket.codegen.model.MessageType;
 import electrosphere.socket.codegen.utils.Utilities;
+import java.util.HashMap;
 
 /*
 
@@ -48,7 +50,29 @@ public class TypeBytes extends SourceGenerator {
             fullFile = fullFile + "    " + cat.getCategoryName() + " packet sizes\n";
             fullFile = fullFile + "    */\n";
             for(MessageType type : cat.getMessageTypes()){
-                fullFile = fullFile + "    public static final byte " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + incrementer + ";\n";
+                //get all data types
+                HashMap<String,String> typeMap = new HashMap();
+                for(Data variable : cat.getData()){
+                    typeMap.put(variable.getName(), variable.getType());
+                }
+
+                int packetSize = 2; // 2 comes from 2 bytes for header
+                for(String variable : type.getData()){
+                    switch(typeMap.get(variable)){
+                        case "FIXED_INT":
+                            packetSize = packetSize + 4;
+                            break;
+                        case "FIXED_FLOAT":
+                            packetSize = packetSize + 4;
+                            break;
+                        case "FIXED_LONG":
+                            packetSize = packetSize + 8;
+                            break;
+                        case "VAR_STRING":
+                            break;
+                    }
+                }
+                fullFile = fullFile + "    public static final byte " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + packetSize + ";\n";
             }
         }
         
