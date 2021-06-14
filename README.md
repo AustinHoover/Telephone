@@ -30,7 +30,7 @@
                 <executable>java</executable>
                 <arguments>
                     <argument>-jar</argument>
-                    <argument>Telephone-0.1.jar</argument>
+                    <argument>Telephone-0.1.3.jar</argument>
                 </arguments>
             </configuration>
         </plugin>

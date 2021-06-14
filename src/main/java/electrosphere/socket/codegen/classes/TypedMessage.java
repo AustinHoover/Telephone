@@ -40,7 +40,7 @@ public class TypedMessage extends SourceGenerator {
         //imports
         //attach ByteUtils
         fullFile = fullFile + "import " + config.getPackageName() + ".util.ByteStreamUtils;\n";
-        fullFile = fullFile + "import java.util.LinkedList;\n\n";
+        fullFile = fullFile + "import java.util.List;\n\n";
         
         //class name
         fullFile = fullFile + "public class " + cat.getCategoryName() + "Message extends NetworkMessage {\n\n";
@@ -123,13 +123,13 @@ public class TypedMessage extends SourceGenerator {
         }
         
         //strip packet header
-        fullFile = fullFile + "    static void stripPacketHeader(LinkedList<Byte> byteStream){\n";
+        fullFile = fullFile + "    static void stripPacketHeader(List<Byte> byteStream){\n";
         fullFile = fullFile + "        byteStream.remove(0);\n";
         fullFile = fullFile + "        byteStream.remove(0);\n";
         fullFile = fullFile + "    }\n\n";
         
         //parse check function
-        fullFile = fullFile + "    public static boolean canParseMessage(LinkedList<Byte> byteStream, byte secondByte){\n";
+        fullFile = fullFile + "    public static boolean canParseMessage(List<Byte> byteStream, byte secondByte){\n";
         fullFile = fullFile + "        switch(secondByte){\n";
         for(MessageType type : cat.getMessageTypes()){
             fullFile = fullFile + "            case TypeBytes." + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + ":\n";
@@ -151,7 +151,7 @@ public class TypedMessage extends SourceGenerator {
                 typeMap.put(variable.getName(), variable.getType());
             }
             //parse function
-            fullFile = fullFile + "    public static " + cat.getCategoryName() + "Message parse" + type.getMessageName() + "Message(LinkedList<Byte> byteStream){\n";
+            fullFile = fullFile + "    public static " + cat.getCategoryName() + "Message parse" + type.getMessageName() + "Message(List<Byte> byteStream){\n";
             fullFile = fullFile + "        " + cat.getCategoryName() + "Message rVal = new " + cat.getCategoryName() + "Message(" + cat.getCategoryName() + "MessageType." + type.getMessageName().toUpperCase() + ");\n";
             fullFile = fullFile + "        stripPacketHeader(byteStream);\n";
             for(String data : type.getData()){
