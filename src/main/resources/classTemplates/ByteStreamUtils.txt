@@ -1,5 +1,5 @@
 import java.nio.ByteBuffer;
-import java.util.LinkedList;
+import java.util.List;
 
 public class ByteStreamUtils {
     
@@ -9,7 +9,7 @@ public class ByteStreamUtils {
         integerCompactor = ByteBuffer.allocate(8);
     }
     
-    public static int popIntFromByteQueue(LinkedList<Byte> queue){
+    public static int popIntFromByteQueue(List<Byte> queue){
         int rVal = -1;
         integerCompactor.clear();
         integerCompactor.put(queue.remove(0));
@@ -21,7 +21,7 @@ public class ByteStreamUtils {
         return rVal;
     }
     
-    public static float popFloatFromByteQueue(LinkedList<Byte> queue){
+    public static float popFloatFromByteQueue(List<Byte> queue){
         float rVal = -1;
         integerCompactor.clear();
         integerCompactor.put(queue.remove(0));
@@ -33,7 +33,7 @@ public class ByteStreamUtils {
         return rVal;
     }
     
-    public static long popLongFromByteQueue(LinkedList<Byte> queue){
+    public static long popLongFromByteQueue(List<Byte> queue){
         long rVal = -1;
         integerCompactor.clear();
         integerCompactor.put(queue.remove(0));

@@ -12,7 +12,7 @@
         return rawBytes;
     }
     
-    public static NetworkMessage parseBytestreamForMessage(LinkedList<Byte> byteStream){
+    public static NetworkMessage parseBytestreamForMessage(List<Byte> byteStream){
         NetworkMessage rVal = null;
         byte firstByte;
         byte secondByte;
