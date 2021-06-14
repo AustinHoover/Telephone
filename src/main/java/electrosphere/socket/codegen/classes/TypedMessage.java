@@ -242,8 +242,8 @@ public class TypedMessage extends SourceGenerator {
                         fullFile = fullFile + "                intValues = ByteStreamUtils.serializeLongToBytes(" + data + ");\n";
                         fullFile = fullFile + "                for(int i = 0; i < 8; i++){\n";
                         fullFile = fullFile + "                    rawBytes[" + offset + "+i] = intValues[i];\n";
-                        fullFile = fullFile + "                }";
-                        offset = offset + 4;
+                        fullFile = fullFile + "                }\n";
+                        offset = offset + 8;
                         break;
                     case "VAR_STRING":
                         //TODO
