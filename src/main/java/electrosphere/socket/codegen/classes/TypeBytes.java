@@ -57,6 +57,7 @@ public class TypeBytes extends SourceGenerator {
                 }
 
                 int packetSize = 2; // 2 comes from 2 bytes for header
+                boolean variableSize = false;
                 for(String variable : type.getData()){
                     switch(typeMap.get(variable)){
                         case "FIXED_INT":
@@ -69,10 +70,13 @@ public class TypeBytes extends SourceGenerator {
                             packetSize = packetSize + 8;
                             break;
                         case "VAR_STRING":
+                            variableSize = true;
                             break;
                     }
                 }
-                fullFile = fullFile + "    public static final byte " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + packetSize + ";\n";
+                if(!variableSize){
+                    fullFile = fullFile + "    public static final byte " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + packetSize + ";\n";
+                }
             }
         }
         
