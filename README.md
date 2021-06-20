@@ -4,7 +4,7 @@
 #### A code generation tool which converts a JSON configuration into a network parsing library.
 
 # !!!WARNING!!!
-#### This was written in <24 hours and definitely needs work (and documentation) before it is used in any kind of workflow automatically.
+#### This was architected in <24 hours and definitely needs work (and documentation) before it is used in any kind of workflow automatically.
 
 
 # Usage
@@ -30,7 +30,7 @@
                 <executable>java</executable>
                 <arguments>
                     <argument>-jar</argument>
-                    <argument>Telephone-0.1.3.jar</argument>
+                    <argument>Telephone-0.1.4.jar</argument>
                 </arguments>
             </configuration>
         </plugin>
@@ -38,6 +38,7 @@
 </build>
 
 ```
+That said, the principle author manually calls the jar for the meantime.
 
 # Configuration
 #### [An example configuration file is provided in the root directory.](https://github.com/AustinHoover/SocketMessageCodeGen/blob/master/template.json)
