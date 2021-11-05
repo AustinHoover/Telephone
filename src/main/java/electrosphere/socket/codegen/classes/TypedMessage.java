@@ -50,6 +50,9 @@ public class TypedMessage extends SourceGenerator {
                 case "VAR_STRING":
                     fixedSizeVariableMap.put(data.getName(), false);
                     break;
+                case "FIXED_DOUBLE":
+                    fixedSizeVariableMap.put(data.getName(), true);
+                    break;
             }
         }
         //construct map of whether the message type is variable size or not
@@ -98,6 +101,9 @@ public class TypedMessage extends SourceGenerator {
                     break;
                 case "VAR_STRING":
                     fullFile = fullFile + "    String " + variable.getName() + ";\n";
+                    break;
+                case "FIXED_DOUBLE":
+                    fullFile = fullFile + "    double " + variable.getName() + ";\n";
                     break;
             }
         }
@@ -157,6 +163,16 @@ public class TypedMessage extends SourceGenerator {
                     fullFile = fullFile + "        this." + variable.getName() + " = " + variable.getName() + ";\n";
                     fullFile = fullFile + "    }\n\n";
                     break;
+                case "FIXED_DOUBLE":
+                    //getter
+                    fullFile = fullFile + "    public double get" + variable.getName() + "() {\n";
+                    fullFile = fullFile + "        return " + variable.getName() + ";\n";
+                    fullFile = fullFile + "    }\n\n";
+                    //setter
+                    fullFile = fullFile + "    public void set" + variable.getName() + "(double " + variable.getName() + ") {\n";
+                    fullFile = fullFile + "        this." + variable.getName() + " = " + variable.getName() + ";\n";
+                    fullFile = fullFile + "    }\n\n";
+                    break;
             }
         }
         
@@ -211,6 +227,9 @@ public class TypedMessage extends SourceGenerator {
                     case "VAR_STRING":
                         fullFile = fullFile + "String " + data + ",";
                         break;
+                    case "FIXED_DOUBLE":
+                        fullFile = fullFile + "double " + data + ",";
+                        break;
                 }
             }
             //chop off last comma
@@ -253,6 +272,9 @@ public class TypedMessage extends SourceGenerator {
                         break;
                     case "VAR_STRING":
                         packetSizeCalculation = packetSizeCalculation + "+4+" + variable + ".length()"; // 4 for integer header
+                        break;
+                    case "FIXED_DOUBLE":
+                        packetSizeCalculation = packetSizeCalculation + "+8";
                         break;
                 }
             }
@@ -297,6 +319,13 @@ public class TypedMessage extends SourceGenerator {
                         fullFile = fullFile + "                    rawBytes[" + offset + offsetFunctions + "+i] = stringBytes[i];\n";
                         fullFile = fullFile + "                }\n";
                         offsetFunctions = offsetFunctions + "+" + data + ".length()";
+                        break;
+                    case "FIXED_DOUBLE":
+                        fullFile = fullFile + "                intValues = ByteStreamUtils.serializeDoubleToBytes(" + data + ");\n";
+                        fullFile = fullFile + "                for(int i = 0; i < 8; i++){\n";
+                        fullFile = fullFile + "                    rawBytes[" + offset + offsetFunctions + "+i] = intValues[i];\n";
+                        fullFile = fullFile + "                }\n";
+                        offset = offset + 8;
                         break;
                 }
             }
@@ -349,6 +378,9 @@ public class TypedMessage extends SourceGenerator {
                 case "VAR_STRING":
                     rVal = rVal + "        rVal.set" + data + "(ByteStreamUtils.popStringFromByteQueue(byteStream));\n";
                     break;
+                case "FIXED_DOUBLE":
+                    rVal = rVal + "        rVal.set" + data + "(ByteStreamUtils.popDoubleFromByteQueue(byteStream));\n";
+                    break;
             }
         }
         rVal = rVal + "        return rVal;\n";
@@ -394,6 +426,12 @@ public class TypedMessage extends SourceGenerator {
                     rVal = rVal + "            " + currentData + "Size = ByteStreamUtils.popIntFromByteQueue(temporaryByteQueue);\n";
                     rVal = rVal + "        }\n";
                     rVal = rVal + "        if(currentStreamLength < " + (currentLength + 4) + " + " + currentData + "Size){\n";
+                    rVal = rVal + "            return false;\n";
+                    rVal = rVal + "        }\n";
+                    break;
+                case "FIXED_DOUBLE":
+                    currentLength = currentLength + 8; // size of long
+                    rVal = rVal + "        if(currentStreamLength < " + currentLength + "){\n";
                     rVal = rVal + "            return false;\n";
                     rVal = rVal + "        }\n";
                     break;

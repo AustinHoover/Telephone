@@ -72,6 +72,9 @@ public class TypeBytes extends SourceGenerator {
                         case "VAR_STRING":
                             variableSize = true;
                             break;
+                        case "FIXED_DOUBLE":
+                            packetSize = packetSize + 8;
+                            break;
                     }
                 }
                 if(!variableSize){
