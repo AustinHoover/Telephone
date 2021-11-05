@@ -75,6 +75,27 @@ public class ByteStreamUtils {
         String rVal = new String(stringBytes);
         return rVal;
     }
+
+    public static double popDoubleFromByteQueue(List<Byte> queue){
+        double rVal = -1;
+        bufferLock.acquireUninterruptibly();
+        integerCompactor.clear();
+        integerCompactor.position(0);
+        integerCompactor.limit(8);
+        integerCompactor.put(0,queue.remove(0));
+        integerCompactor.put(1,queue.remove(0));
+        integerCompactor.put(2,queue.remove(0));
+        integerCompactor.put(3,queue.remove(0));
+        integerCompactor.put(4,queue.remove(0));
+        integerCompactor.put(5,queue.remove(0));
+        integerCompactor.put(6,queue.remove(0));
+        integerCompactor.put(7,queue.remove(0));
+        integerCompactor.position(0);
+        integerCompactor.limit(8);
+        rVal = integerCompactor.getDouble();
+        bufferLock.release();
+        return rVal;
+    }
     
     public static byte[] serializeIntToBytes(int i){
         byte[] rVal = new byte[4];
@@ -143,6 +164,27 @@ public class ByteStreamUtils {
         for(int i = 0; i < length; i++){
             rVal[4+i] = stringBytes[i];
         }
+        return rVal;
+    }
+
+    public static byte[] serializeDoubleToBytes(double i){
+        byte[] rVal = new byte[8];
+        bufferLock.acquireUninterruptibly();
+        integerCompactor.clear();
+        integerCompactor.position(0);
+        integerCompactor.limit(8);
+        integerCompactor.putDouble(i);
+        integerCompactor.position(0);
+        integerCompactor.limit(8);
+        rVal[0] = integerCompactor.get(0);
+        rVal[1] = integerCompactor.get(1);
+        rVal[2] = integerCompactor.get(2);
+        rVal[3] = integerCompactor.get(3);
+        rVal[4] = integerCompactor.get(4);
+        rVal[5] = integerCompactor.get(5);
+        rVal[6] = integerCompactor.get(6);
+        rVal[7] = integerCompactor.get(7);
+        bufferLock.release();
         return rVal;
     }
     
