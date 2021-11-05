@@ -78,7 +78,11 @@ public class TypeBytes extends SourceGenerator {
                     }
                 }
                 if(!variableSize){
-                    fullFile = fullFile + "    public static final byte " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + packetSize + ";\n";
+                    if(packetSize < 255){
+                        fullFile = fullFile + "    public static final byte " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + packetSize + ";\n";
+                    } else {
+                        fullFile = fullFile + "    public static final short " + cat.getCategoryName().toUpperCase() + "_MESSAGE_TYPE_" + type.getMessageName().toUpperCase() + "_SIZE = " + packetSize + ";\n";
+                    }
                 }
             }
         }
